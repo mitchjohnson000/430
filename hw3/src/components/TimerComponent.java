@@ -15,22 +15,7 @@ public class TimerComponent extends Component
   @Override
   public void send(IMessage message)
   {
-    final TimerComponent timerComponent = this;
-
-    if(message instanceof SetTimeoutMessage){
-
-      Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-          message.getSender().send(new TimeoutMessage(((SetTimeoutMessage) message).getOriginalId(),timerComponent));
-          System.out.println(Thread.currentThread().getName());
-        }
-      };
-
-      //Only spawns a max of one thread, so still single threaded
-      ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-      scheduler.schedule(runnable,((SetTimeoutMessage) message).getTimeout(), TimeUnit.SECONDS);
-    }   
+    message.dispatch(this);
   }
 
   @Override
@@ -39,4 +24,23 @@ public class TimerComponent extends Component
 
   }
 
+  @Override
+  public void handleSetTimeout(SetTimeoutMessage msg) {
+
+    final TimerComponent timerComponent = this;
+    Runnable runnable = new Runnable() {
+      @Override
+      public void run() {
+        msg.getSender().send(new TimeoutMessage(((SetTimeoutMessage) msg).getOriginalId(),timerComponent));
+        System.out.println(Thread.currentThread().getName());
+      }
+    };
+
+    //Only spawns a max of one thread, so still single threaded
+    ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    scheduler.schedule(runnable,((SetTimeoutMessage) msg).getTimeout(), TimeUnit.SECONDS);
+    scheduler.shutdown();
+  }
+
 }
+

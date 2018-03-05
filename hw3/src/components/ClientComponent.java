@@ -28,13 +28,13 @@ public class ClientComponent extends ThreadedComponent
    */
   private Map<Integer, Integer> pending;
   
-  public ClientComponent(Component db)
+  public ClientComponent(Component db,Component tc)
   {
     this.db = db;
     cache = new ArrayList<Record>();
     pending = new HashMap<Integer, Integer>();
-    tc = new TimerComponent();
-  }
+    this.tc = tc;
+}
   
   public void handleText(TextMessage msg)
   {
@@ -43,7 +43,11 @@ public class ClientComponent extends ThreadedComponent
 
   @Override
   public void handleTimeout(TimeoutMessage msg) {
-    System.out.println("" + msg.id);
+    if(pending.containsKey(msg.correlationId)){
+      Integer i = pending.remove(msg.correlationId);
+      System.out.println("request for id " + i + " timed out");
+
+    }
   }
 
   public void handleResult(ResultMessage msg)

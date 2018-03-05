@@ -59,4 +59,7 @@ public abstract class Component
   {
     handleDefault(msg);
   }
+  public void handlePing(PingMessage msg){ handleDefault(msg);}
+  public void handlePingReply(PingReplyMessage msg){ handleDefault(msg);}
+
 }
