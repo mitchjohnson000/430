@@ -52,7 +52,6 @@ public class Universe
     
     // rock and roll...
     frame.setVisible(true);
-
   }
   
   private static void createComponents()

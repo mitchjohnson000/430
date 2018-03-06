@@ -11,12 +11,14 @@ public class SetTimeoutMessage extends AbstractMessage
 {
   private int originalId;
   private int timeout; // ms
+  private Status state;
   
-  public SetTimeoutMessage(Component sender, int originalId, int timeout)
+  public SetTimeoutMessage(Component sender, int originalId, int timeout,Status state)
   {
     super(sender);
     this.originalId = originalId;
     this.timeout = timeout;
+    this.state = state;
   }
   
   @Override
@@ -33,5 +35,9 @@ public class SetTimeoutMessage extends AbstractMessage
   public int getTimeout()
   {
     return timeout;
+  }
+
+  public Status getState() {
+    return state;
   }
 }

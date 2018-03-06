@@ -31,8 +31,7 @@ public class TimerComponent extends Component
     Runnable runnable = new Runnable() {
       @Override
       public void run() {
-        msg.getSender().send(new TimeoutMessage(((SetTimeoutMessage) msg).getOriginalId(),timerComponent));
-        System.out.println(Thread.currentThread().getName());
+        msg.getSender().send(new TimeoutMessage(((SetTimeoutMessage) msg).getOriginalId(),timerComponent,msg.getState()));
       }
     };
 

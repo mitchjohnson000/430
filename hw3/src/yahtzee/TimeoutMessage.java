@@ -6,14 +6,20 @@ package yahtzee;
  */
 public class TimeoutMessage extends AbstractMessage
 {
-  public TimeoutMessage(int correlationId, Component sender)
+  private Status state;
+  public TimeoutMessage(int correlationId, Component sender,Status state)
   {
     super(correlationId, sender);
+    this.state = state;
   }
   
   @Override
   public void dispatch(Component receiver)
   {
     receiver.handleTimeout(this);
+  }
+
+  public Status getState() {
+    return state;
   }
 }
